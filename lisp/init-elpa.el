@@ -32,7 +32,8 @@
   "Install given PACKAGE, optionally requiring MIN-VERSION.
 If NO-REFRESH is non-nil, the available package lists will not be
 re-downloaded in order to locate PACKAGE."
-  (or (package-installed-p package min-version)
+  (if (package-installed-p package min-version)
+      (package-activate package)
       (let* ((known (cdr (assoc package package-archive-contents)))
              (versions (mapcar #'package-desc-version known)))
         (if (cl-some (lambda (v) (version-list-<= min-version v)) versions)
